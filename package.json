@@ -1,0 +1,77 @@
+{
+	"name": "@dorado/cmd-k",
+	"version": "0.1.0",
+	"description": "Command-palette style AI assistant component for Dorado. Drop into any React app to add an AI assistant powered by Dorado's runtime.",
+	"license": "AGPL-3.0",
+	"author": "Omni Federal",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/omni/dorado-cmd-k"
+	},
+	"bugs": {
+		"url": "https://github.com/omni/dorado-cmd-k/issues"
+	},
+	"homepage": "https://dorado.dev",
+	"keywords": [
+		"react",
+		"ai",
+		"assistant",
+		"cmdk",
+		"dorado",
+		"rag",
+		"chat",
+		"llm",
+		"component"
+	],
+	"type": "module",
+	"main": "dist/index.esm.js",
+	"module": "dist/index.esm.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"dev": "vite",
+		"build": "tsup src/index.ts --format cjs,esm --dts --out-dir dist",
+		"lint": "biome lint .",
+		"format": "biome format . --write",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest",
+		"prepublishOnly": "pnpm build && pnpm lint && pnpm typecheck && pnpm test",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
+	},
+	"dependencies": {
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"radix-ui": "^1.4.3",
+		"react-textarea-autosize": "^8.5.9",
+		"swr": "^2.3.6",
+		"zod": "^4.1.11"
+	},
+	"peerDependencies": {
+		"react": ">=19",
+		"react-dom": ">=19"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.5",
+		"@storybook/react-vite": "^9.1.10",
+		"@types/react": "^19.2  ",
+		"@types/react-dom": "^19.2.0",
+		"react": "19.2.0",
+		"react-dom": "19.2.0",
+		"storybook": "^9.1.10",
+		"tsup": "^8.5.0",
+		"typescript": "^5.9.3",
+		"vite": "^7.1.8",
+		"vitest": "^3.2.4",
+		"@storybook/addon-docs": "^9.1.10"
+	},
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
