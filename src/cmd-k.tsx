@@ -2,6 +2,7 @@ import { type UIMessage, useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import clsx from "clsx";
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
+import useSWR from "swr";
 import { DockedLayout } from "./layouts/docked";
 import { FullscreenLayout } from "./layouts/fullscreen";
 import { ModalLayout } from "./layouts/modal";
@@ -54,6 +55,30 @@ export const CmdK: FC<CmdKProps> = ({
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 
 	const firstName = jwt ? getFirstNameFromJWT(jwt) : undefined;
+
+	// Fetch assistant data
+	const { data: assistant } = useSWR(
+		jwt ? [`${apiUrl}/assistants/${assistantId}`, jwt] : null,
+		async ([url, token]) => {
+			const response = await fetch(url, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!response.ok) {
+				throw new Error("Failed to fetch assistant");
+			}
+			return response.json() as Promise<{
+				id: string;
+				name: string;
+				description: string | null;
+				provider: string;
+				model: string;
+				systemPrompt: string;
+				greeting: string;
+			}>;
+		}
+	);
 
 	const { messages, sendMessage } = useChat({
 		transport: new DefaultChatTransport({
@@ -167,9 +192,10 @@ export const CmdK: FC<CmdKProps> = ({
 				onClose={() => handleOpenChange(false)}
 				showClose={showCloseButton}
 				isDocked={isDocked}
+				assistantName={assistant?.name}
 			/>
 			{messages.length === 0 ? (
-				<EmptyState firstName={firstName} />
+				<EmptyState firstName={firstName} greeting={assistant?.greeting} />
 			) : (
 				<div className="cmdk-thread" ref={threadRef}>
 					{messages.map((message: UIMessage) => (

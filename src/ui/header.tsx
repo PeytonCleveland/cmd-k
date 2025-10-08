@@ -6,6 +6,7 @@ type HeaderProps = {
 	onClose?: () => void;
 	showClose?: boolean;
 	isDocked?: boolean;
+	assistantName?: string;
 };
 
 export const Header = ({
@@ -14,6 +15,7 @@ export const Header = ({
 	onClose,
 	showClose = false,
 	isDocked = false,
+	assistantName,
 }: HeaderProps) => {
 	return (
 		<div className="cmdk-header" data-docked={isDocked}>
@@ -25,7 +27,7 @@ export const Header = ({
 			>
 				{historyOpen ? <Icons.Sidebar /> : <Icons.SidebarFilled />}
 			</button>
-			<h3>Assistant</h3>
+			<h3>{assistantName || "Assistant"}</h3>
 			{showClose && onClose && (
 				<button
 					type="button"
