@@ -123,8 +123,6 @@ export const CmdK: FC<CmdKProps> = ({
 	const isDocked = layout === "docked";
 	const showCloseButton = isDocked || layout === "fullscreen";
 
-	console.log("Messages:", messages);
-
 	const content = (
 		<div
 			className={clsx("cmdk", className)}
