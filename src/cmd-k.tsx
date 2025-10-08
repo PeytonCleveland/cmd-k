@@ -30,8 +30,8 @@ export type CmdKProps = {
 	dockedWidth?: number;
 	/** Optional className for outer shell */
 	className?: string;
-	/** Function to retrieve user JWT token */
-	getUserJWT?: () => string | Promise<string>;
+	/** User JWT token for authentication */
+	jwt?: string;
 };
 
 export const CmdK: FC<CmdKProps> = ({
@@ -44,21 +44,23 @@ export const CmdK: FC<CmdKProps> = ({
 	keyboardShortcut = "k",
 	dockedWidth = 480,
 	className,
-	getUserJWT,
+	jwt,
 }) => {
 	const [internalOpen, setInternalOpen] = useState(defaultOpen);
 	const [historyOpen, setHistoryOpen] = useState(false);
 	const [layout, setLayout] = useState(initialLayout);
-	const [firstName, setFirstName] = useState<string | undefined>(undefined);
 	const [input, setInput] = useState("");
-	const [jwt, setJwt] = useState<string | undefined>(undefined);
+
+	const firstName = jwt ? getFirstNameFromJWT(jwt) : undefined;
 
 	const { messages, sendMessage } = useChat({
 		transport: new DefaultChatTransport({
 			api: `${apiUrl}/assistants/${assistantId}/chat`,
-			headers: async () => ({
-				Authorization: jwt ? `Bearer ${jwt}` : "",
-			}),
+			headers: jwt
+				? {
+						Authorization: `Bearer ${jwt}`,
+					}
+				: {},
 		}),
 	});
 
@@ -96,23 +98,6 @@ export const CmdK: FC<CmdKProps> = ({
 			handleOpenChange(true);
 		}
 	};
-
-	useEffect(() => {
-		if (!getUserJWT) return;
-
-		const loadUserData = async () => {
-			try {
-				const token = await getUserJWT();
-				setJwt(token);
-				const name = getFirstNameFromJWT(token);
-				setFirstName(name);
-			} catch (error) {
-				console.error("Failed to get user data:", error);
-			}
-		};
-
-		loadUserData();
-	}, [getUserJWT]);
 
 	useEffect(() => {
 		if (keyboardShortcut === false) return;

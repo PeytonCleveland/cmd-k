@@ -3,11 +3,11 @@
 A drop-in **command-palette style** assistant for your app.  
 Connects directly to **Dorado** (your AI runtime) for chat, streaming, RAG, and tools—**no secrets in the browser**.
 
-- ⚡️ Plug & play: mount a component, pass your `projectId` & a user JWT getter.
+- ⚡️ Plug & play: mount a component, pass your `assistantId` & user JWT.
 - 💬 Realtime: token-level streaming (SSE) with auto-reconnect.
 - 📚 Grounded: works with Dorado Knowledge Bases (RAG) when your assistant is configured to retrieve.
 - 🛠 Tools: renders tool call states and results (when enabled server-side).
-- 🧭 Keyboard-first: “cmd-k” palette UI with accessible navigation.
+- 🧭 Keyboard-first: "cmd-k" palette UI with accessible navigation.
 - 🌍 Anywhere: talks to Dorado Cloud or your on-prem/classified deployment.
 
 ---

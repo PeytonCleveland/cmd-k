@@ -5,7 +5,9 @@ type EmptyStateProps = {
 };
 
 export const EmptyState = ({ firstName }: EmptyStateProps) => {
-	const greeting = firstName ? `Hi ${firstName}, how can I help` : "How can I help";
+	const greeting = firstName
+		? `Hi ${firstName}, how can I help`
+		: "Hi, how can I help";
 
 	return (
 		<div className="cmdk-empty-state">
