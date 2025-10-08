@@ -6,6 +6,7 @@ type HeaderProps = {
 	onClose?: () => void;
 	showClose?: boolean;
 	isDocked?: boolean;
+	assistantName?: string;
 	assistantTitle?: string;
 };
 
@@ -15,6 +16,7 @@ export const Header = ({
 	onClose,
 	showClose = false,
 	isDocked = false,
+	assistantName,
 	assistantTitle,
 }: HeaderProps) => {
 	return (
@@ -27,7 +29,7 @@ export const Header = ({
 			>
 				{historyOpen ? <Icons.Sidebar /> : <Icons.SidebarFilled />}
 			</button>
-			<h3>{assistantTitle || "Assistant"}</h3>
+			<h3>{assistantTitle || assistantName || "Assistant"}</h3>
 			{showClose && onClose && (
 				<button
 					type="button"

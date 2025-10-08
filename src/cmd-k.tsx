@@ -191,6 +191,7 @@ export const CmdK: FC<CmdKProps> = ({
 				onClose={() => handleOpenChange(false)}
 				showClose={showCloseButton}
 				isDocked={isDocked}
+				assistantName={assistant?.name}
 				assistantTitle={assistant?.title}
 			/>
 			{messages.length === 0 ? (
