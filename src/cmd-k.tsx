@@ -56,7 +56,6 @@ export const CmdK: FC<CmdKProps> = ({
 
 	const firstName = jwt ? getFirstNameFromJWT(jwt) : undefined;
 
-	// Fetch assistant data
 	const { data: assistant } = useSWR(
 		jwt ? [`${apiUrl}/assistants/${assistantId}`, jwt] : null,
 		async ([url, token]) => {
@@ -76,8 +75,9 @@ export const CmdK: FC<CmdKProps> = ({
 				model: string;
 				systemPrompt: string;
 				greeting: string;
+				title: string;
 			}>;
-		}
+		},
 	);
 
 	const { messages, sendMessage } = useChat({
@@ -158,7 +158,6 @@ export const CmdK: FC<CmdKProps> = ({
 		}
 	}, [messages]);
 
-	// Auto-focus input when opened
 	useEffect(() => {
 		if (open && inputRef.current) {
 			inputRef.current.focus();
@@ -192,7 +191,7 @@ export const CmdK: FC<CmdKProps> = ({
 				onClose={() => handleOpenChange(false)}
 				showClose={showCloseButton}
 				isDocked={isDocked}
-				assistantName={assistant?.name}
+				assistantTitle={assistant?.title}
 			/>
 			{messages.length === 0 ? (
 				<EmptyState firstName={firstName} greeting={assistant?.greeting} />

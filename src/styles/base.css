@@ -43,7 +43,7 @@
   }
 
   .cmdk-header h3 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 16px;
     flex: 1;
   }
@@ -99,7 +99,7 @@
     background: transparent;
     color: var(--cmdk-fg);
     font-family: var(--cmdk-font);
-    font-weight: 300;
+    font-weight: 400;
     resize: none;
     padding: 12px 16px;
     line-height: 1.5;
