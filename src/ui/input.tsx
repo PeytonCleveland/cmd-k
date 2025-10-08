@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 type InputProps = {
@@ -7,25 +8,25 @@ type InputProps = {
 	placeholder?: string;
 };
 
-export const Input = ({
-	value,
-	onChange,
-	onSubmit,
-	placeholder = "Ask or search anything...",
-}: InputProps) => {
-	return (
-		<TextareaAutosize
-			className="cmdk-input"
-			placeholder={placeholder}
-			value={value}
-			onChange={onChange}
-			onKeyDown={(e) => {
-				if (e.key === "Enter" && !e.shiftKey) {
-					e.preventDefault();
-					onSubmit(e as unknown as React.FormEvent);
-				}
-			}}
-			maxRows={5}
-		/>
-	);
-};
+export const Input = forwardRef<HTMLTextAreaElement, InputProps>(
+	({ value, onChange, onSubmit, placeholder = "Ask or search anything..." }, ref) => {
+		return (
+			<TextareaAutosize
+				ref={ref}
+				className="cmdk-input"
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" && !e.shiftKey) {
+						e.preventDefault();
+						onSubmit(e as unknown as React.FormEvent);
+					}
+				}}
+				maxRows={5}
+			/>
+		);
+	}
+);
+
+Input.displayName = "Input";

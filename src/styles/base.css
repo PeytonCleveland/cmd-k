@@ -187,6 +187,33 @@
     border-color: white;
   }
 
+  .cmdk-footer-fullscreen-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--cmdk-border);
+    background: transparent;
+    color: var(--cmdk-fg);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 5px;
+  }
+
+  .cmdk-footer-fullscreen-button:hover {
+    background: var(--cmdk-muted);
+    border-color: white;
+  }
+
+  .cmdk-footer-fullscreen-button:active {
+    transform: scale(0.95);
+  }
+
+  .cmdk-footer-fullscreen-button[data-fullscreen="true"] {
+    border-color: white;
+  }
+
 
   .cmdk-message-user {
     align-self: flex-end;

@@ -1,4 +1,4 @@
-import { MdSubdirectoryArrowLeft } from "react-icons/md";
+import { MdFullscreen, MdSubdirectoryArrowLeft } from "react-icons/md";
 
 type SVGIconProps = {
 	size?: number;
@@ -118,4 +118,5 @@ export const Icons = {
 		</SVGIcon>
 	),
 	SubdirectoryArrowLeft: MdSubdirectoryArrowLeft,
+	Fullscreen: MdFullscreen,
 };

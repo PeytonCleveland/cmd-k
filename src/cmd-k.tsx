@@ -1,7 +1,7 @@
 import { type UIMessage, useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import clsx from "clsx";
-import { type FC, useCallback, useEffect, useState } from "react";
+import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { DockedLayout } from "./layouts/docked";
 import { FullscreenLayout } from "./layouts/fullscreen";
 import { ModalLayout } from "./layouts/modal";
@@ -50,6 +50,8 @@ export const CmdK: FC<CmdKProps> = ({
 	const [historyOpen, setHistoryOpen] = useState(false);
 	const [layout, setLayout] = useState(initialLayout);
 	const [input, setInput] = useState("");
+	const threadRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement>(null);
 
 	const firstName = jwt ? getFirstNameFromJWT(jwt) : undefined;
 
@@ -102,6 +104,10 @@ export const CmdK: FC<CmdKProps> = ({
 		}
 	};
 
+	const handleToggleFullscreen = () => {
+		setLayout((prev) => (prev === "fullscreen" ? "modal" : "fullscreen"));
+	};
+
 	useEffect(() => {
 		if (keyboardShortcut === false) return;
 
@@ -119,6 +125,20 @@ export const CmdK: FC<CmdKProps> = ({
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
 	}, [keyboardShortcut, open, handleOpenChange]);
+
+	// biome-ignore lint:correctness/useExhaustiveDependencies
+	useEffect(() => {
+		if (threadRef.current) {
+			threadRef.current.scrollTop = threadRef.current.scrollHeight;
+		}
+	}, [messages]);
+
+	// Auto-focus input when opened
+	useEffect(() => {
+		if (open && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [open]);
 
 	const isDocked = layout === "docked";
 	const showCloseButton = isDocked || layout === "fullscreen";
@@ -151,7 +171,7 @@ export const CmdK: FC<CmdKProps> = ({
 			{messages.length === 0 ? (
 				<EmptyState firstName={firstName} />
 			) : (
-				<div className="cmdk-thread">
+				<div className="cmdk-thread" ref={threadRef}>
 					{messages.map((message: UIMessage) => (
 						<div
 							key={message.id}
@@ -174,11 +194,17 @@ export const CmdK: FC<CmdKProps> = ({
 				</div>
 			)}
 			<Input
+				ref={inputRef}
 				value={input}
 				onChange={handleInputChange}
 				onSubmit={handleSubmit}
 			/>
-			<Footer onToggleDock={handleToggleDock} isDocked={isDocked} />
+			<Footer
+				onToggleDock={handleToggleDock}
+				onToggleFullscreen={handleToggleFullscreen}
+				isDocked={isDocked}
+				layout={layout}
+			/>
 		</div>
 	);
 
