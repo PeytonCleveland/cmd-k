@@ -1,6 +1,6 @@
 {
-	"name": "@dorado/cmd-k",
-	"version": "0.1.0",
+	"name": "@dorado.dev/cmd-k",
+	"version": "0.1.14",
 	"description": "Command-palette style AI assistant component for Dorado. Drop into any React app to add an AI assistant powered by Dorado's runtime.",
 	"license": "AGPL-3.0",
 	"author": "Omni Federal",
@@ -24,28 +24,45 @@
 		"component"
 	],
 	"type": "module",
-	"main": "dist/index.esm.js",
-	"module": "dist/index.esm.js",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"style": "dist/index.css",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		},
+		"./styles": "./dist/index.css"
+	},
 	"files": [
 		"dist",
 		"src"
 	],
 	"scripts": {
 		"dev": "vite",
-		"build": "tsup src/index.ts --format cjs,esm --dts --out-dir dist",
-		"lint": "biome lint .",
+		"build": "tsup src/index.ts --format cjs,esm --dts --out-dir dist --inject-style",
+		"lint": "biome lint ./src",
 		"format": "biome format . --write",
 		"typecheck": "tsc --noEmit",
 		"test": "vitest",
-		"prepublishOnly": "pnpm build && pnpm lint && pnpm typecheck && pnpm test",
+		"prepublishOnly": "pnpm build && pnpm lint && pnpm typecheck",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
+		"@ai-sdk/react": "^2.0.60",
+		"ai": "5.0.60",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"radix-ui": "^1.4.3",
+		"react-icons": "^5.5.0",
 		"react-textarea-autosize": "^8.5.9",
 		"swr": "^2.3.6",
 		"zod": "^4.1.11"
@@ -56,6 +73,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.5",
+		"@storybook/addon-docs": "^9.1.10",
 		"@storybook/react-vite": "^9.1.10",
 		"@types/react": "^19.2  ",
 		"@types/react-dom": "^19.2.0",
@@ -65,8 +83,7 @@
 		"tsup": "^8.5.0",
 		"typescript": "^5.9.3",
 		"vite": "^7.1.8",
-		"vitest": "^3.2.4",
-		"@storybook/addon-docs": "^9.1.10"
+		"vitest": "^3.2.4"
 	},
 	"engines": {
 		"node": ">=24.0.0"

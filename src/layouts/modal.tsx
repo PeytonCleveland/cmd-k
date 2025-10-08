@@ -7,7 +7,11 @@ type ModalLayoutProps = {
 	children: ReactNode;
 };
 
-export const ModalLayout = ({ open, onOpenChange, children }: ModalLayoutProps) => {
+export const ModalLayout = ({
+	open,
+	onOpenChange,
+	children,
+}: ModalLayoutProps) => {
 	return (
 		<Dialog.Root open={open} onOpenChange={onOpenChange}>
 			<Dialog.Portal>
@@ -15,7 +19,9 @@ export const ModalLayout = ({ open, onOpenChange, children }: ModalLayoutProps) 
 					style={{
 						position: "fixed",
 						inset: 0,
-						background: "rgba(0,0,0,0.4)",
+						background: "rgba(0,0,0,0.45)",
+						backdropFilter: "blur(2px)",
+						WebkitBackdropFilter: "blur(2px)",
 					}}
 					onClick={() => onOpenChange(false)}
 				/>
@@ -29,6 +35,9 @@ export const ModalLayout = ({ open, onOpenChange, children }: ModalLayoutProps) 
 						pointerEvents: "none",
 					}}
 				>
+					<Dialog.Title asChild>
+						<span className="sr-only">Command Palette</span>
+					</Dialog.Title>
 					<div style={{ pointerEvents: "auto" }}>{children}</div>
 				</Dialog.Content>
 			</Dialog.Portal>

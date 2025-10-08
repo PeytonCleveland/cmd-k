@@ -5,6 +5,7 @@ type HeaderProps = {
 	historyOpen: boolean;
 	onClose?: () => void;
 	showClose?: boolean;
+	isDocked?: boolean;
 };
 
 export const Header = ({
@@ -12,9 +13,10 @@ export const Header = ({
 	historyOpen,
 	onClose,
 	showClose = false,
+	isDocked = false,
 }: HeaderProps) => {
 	return (
-		<div className="cmdk-header">
+		<div className="cmdk-header" data-docked={isDocked}>
 			<button
 				type="button"
 				className={`cmdk-header-history-button ${historyOpen ? "cmdk-header-history-button-open" : ""}`}

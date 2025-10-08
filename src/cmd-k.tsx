@@ -1,5 +1,7 @@
+import { type UIMessage, useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import clsx from "clsx";
-import { type FC, useEffect, useState } from "react";
+import { type FC, useCallback, useEffect, useState } from "react";
 import { DockedLayout } from "./layouts/docked";
 import { FullscreenLayout } from "./layouts/fullscreen";
 import { ModalLayout } from "./layouts/modal";
@@ -8,36 +10,79 @@ import { Footer } from "./ui/footer";
 import { Header } from "./ui/header";
 import { HistoryPanel } from "./ui/history-panel";
 import { Input } from "./ui/input";
+import { getFirstNameFromJWT } from "./utils/jwt";
 
 export type CmdKProps = {
-	projectId: string;
 	assistantId: string;
+	/** API base URL. Defaults to https://api.dorado.dev for production. Override for self-hosted or dev environments. */
+	apiUrl?: string;
 	/** Layout mode */
 	layout?: "modal" | "docked" | "fullscreen";
-	/** Open on mount */
+	/** Controlled open state */
+	open?: boolean;
+	/** Callback when open state changes */
+	onOpenChange?: (open: boolean) => void;
+	/** Open on mount (uncontrolled mode) */
 	defaultOpen?: boolean;
+	/** Key to use with Cmd/Ctrl to toggle (e.g., "k" for Cmd+K). Set to false to disable. Default: "k" */
+	keyboardShortcut?: string | false;
 	/** Docked width in px */
 	dockedWidth?: number;
 	/** Optional className for outer shell */
 	className?: string;
+	/** Function to retrieve user JWT token */
+	getUserJWT?: () => string | Promise<string>;
 };
 
 export const CmdK: FC<CmdKProps> = ({
-	projectId,
 	assistantId,
-	layout = "modal",
+	apiUrl = "https://api.dorado.dev",
+	layout: initialLayout = "modal",
+	open: controlledOpen,
+	onOpenChange,
 	defaultOpen = false,
+	keyboardShortcut = "k",
 	dockedWidth = 480,
 	className,
+	getUserJWT,
 }) => {
-	const [open, setOpen] = useState(defaultOpen);
-	const [input, setInput] = useState("");
+	const [internalOpen, setInternalOpen] = useState(defaultOpen);
 	const [historyOpen, setHistoryOpen] = useState(false);
+	const [layout, setLayout] = useState(initialLayout);
+	const [firstName, setFirstName] = useState<string | undefined>(undefined);
+	const [input, setInput] = useState("");
+	const [jwt, setJwt] = useState<string | undefined>(undefined);
 
-	const handleSubmit = () => {
+	const { messages, sendMessage } = useChat({
+		transport: new DefaultChatTransport({
+			api: `${apiUrl}/assistants/${assistantId}/chat`,
+			headers: async () => ({
+				Authorization: jwt ? `Bearer ${jwt}` : "",
+			}),
+		}),
+	});
+
+	const isControlled = controlledOpen !== undefined;
+	const open = isControlled ? controlledOpen : internalOpen;
+
+	const handleOpenChange = useCallback(
+		(newOpen: boolean) => {
+			if (!isControlled) {
+				setInternalOpen(newOpen);
+			}
+			onOpenChange?.(newOpen);
+		},
+		[isControlled, onOpenChange],
+	);
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setInput(e.target.value);
+	};
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
 		if (!input.trim()) return;
-		// TODO: Handle message submission
-		console.log("Submit:", input);
+		sendMessage({ text: input });
 		setInput("");
 	};
 
@@ -45,26 +90,56 @@ export const CmdK: FC<CmdKProps> = ({
 		setHistoryOpen((prev) => !prev);
 	};
 
+	const handleToggleDock = () => {
+		setLayout((prev) => (prev === "docked" ? "modal" : "docked"));
+		if (layout === "modal") {
+			handleOpenChange(true);
+		}
+	};
+
 	useEffect(() => {
-		const onKey = (e: KeyboardEvent) => {
-			const metaK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k";
-			if (metaK) {
-				e.preventDefault();
-				setOpen((o) => !o);
+		if (!getUserJWT) return;
+
+		const loadUserData = async () => {
+			try {
+				const token = await getUserJWT();
+				setJwt(token);
+				const name = getFirstNameFromJWT(token);
+				setFirstName(name);
+			} catch (error) {
+				console.error("Failed to get user data:", error);
 			}
-			if (e.key === "Escape") setOpen(false);
+		};
+
+		loadUserData();
+	}, [getUserJWT]);
+
+	useEffect(() => {
+		if (keyboardShortcut === false) return;
+
+		const onKey = (e: KeyboardEvent) => {
+			const matchesShortcut =
+				(e.metaKey || e.ctrlKey) &&
+				e.key.toLowerCase() === keyboardShortcut.toLowerCase();
+
+			if (matchesShortcut) {
+				e.preventDefault();
+				handleOpenChange(!open);
+			}
+			if (e.key === "Escape") handleOpenChange(false);
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, []);
+	}, [keyboardShortcut, open, handleOpenChange]);
 
-	const showCloseButton = layout === "docked" || layout === "fullscreen";
+	const isDocked = layout === "docked";
+	const showCloseButton = isDocked || layout === "fullscreen";
 
 	const content = (
 		<div
 			className={clsx("cmdk", className)}
 			style={
-				layout === "docked"
+				isDocked
 					? { width: dockedWidth, height: "100vh", borderRadius: 0 }
 					: layout === "fullscreen"
 						? { width: "100vw", height: "100vh" }
@@ -76,22 +151,52 @@ export const CmdK: FC<CmdKProps> = ({
 			<HistoryPanel
 				isOpen={historyOpen}
 				onClose={() => setHistoryOpen(false)}
+				isDocked={isDocked}
 			/>
 			<Header
 				onToggleHistory={handleToggleHistory}
 				historyOpen={historyOpen}
-				onClose={() => setOpen(false)}
+				onClose={() => handleOpenChange(false)}
 				showClose={showCloseButton}
+				isDocked={isDocked}
 			/>
-			<EmptyState />
-			<Input value={input} onChange={setInput} onSubmit={handleSubmit} />
-			<Footer />
+			{messages.length === 0 ? (
+				<EmptyState firstName={firstName} />
+			) : (
+				<div className="cmdk-thread">
+					{messages.map((message: UIMessage) => (
+						<div
+							key={message.id}
+							className={
+								message.role === "user"
+									? "cmdk-message-user"
+									: "cmdk-message-assistant"
+							}
+						>
+							{message.parts.map((part, index) => {
+								if (part.type === "text") {
+									return (
+										<span key={`${message.id}-${index}`}>{part.text}</span>
+									);
+								}
+								return null;
+							})}
+						</div>
+					))}
+				</div>
+			)}
+			<Input
+				value={input}
+				onChange={handleInputChange}
+				onSubmit={handleSubmit}
+			/>
+			<Footer onToggleDock={handleToggleDock} isDocked={isDocked} />
 		</div>
 	);
 
 	if (layout === "modal") {
 		return (
-			<ModalLayout open={open} onOpenChange={setOpen}>
+			<ModalLayout open={open} onOpenChange={handleOpenChange}>
 				{content}
 			</ModalLayout>
 		);

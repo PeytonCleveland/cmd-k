@@ -1,4 +1,4 @@
-# @dorado/cmd-k
+# @dorado.dev/cmd-k
 
 A drop-in **command-palette style** assistant for your app.  
 Connects directly to **Dorado** (your AI runtime) for chat, streaming, RAG, and tools—**no secrets in the browser**.

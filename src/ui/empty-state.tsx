@@ -1,6 +1,12 @@
 import { Icons } from "./icons";
 
-export const EmptyState = () => {
+type EmptyStateProps = {
+	firstName?: string;
+};
+
+export const EmptyState = ({ firstName }: EmptyStateProps) => {
+	const greeting = firstName ? `Hi ${firstName}, how can I help` : "How can I help";
+
 	return (
 		<div className="cmdk-empty-state">
 			<div className="cmdk-empty-state-icon">
@@ -8,7 +14,7 @@ export const EmptyState = () => {
 			</div>
 			<div>
 				<h4 className="cmdk-empty-state-title">
-					Hi Peyton, how can I help
+					{greeting}
 					<br /> you today?
 				</h4>
 			</div>

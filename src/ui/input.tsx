@@ -2,8 +2,8 @@ import TextareaAutosize from "react-textarea-autosize";
 
 type InputProps = {
 	value: string;
-	onChange: (value: string) => void;
-	onSubmit: () => void;
+	onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+	onSubmit: (e: React.FormEvent) => void;
 	placeholder?: string;
 };
 
@@ -18,11 +18,11 @@ export const Input = ({
 			className="cmdk-input"
 			placeholder={placeholder}
 			value={value}
-			onChange={(e) => onChange(e.target.value)}
+			onChange={onChange}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" && !e.shiftKey) {
 					e.preventDefault();
-					onSubmit();
+					onSubmit(e as unknown as React.FormEvent);
 				}
 			}}
 			maxRows={5}

@@ -1,9 +1,10 @@
 type HistoryPanelProps = {
 	isOpen: boolean;
 	onClose: () => void;
+	isDocked?: boolean;
 };
 
-export const HistoryPanel = ({ isOpen, onClose }: HistoryPanelProps) => {
+export const HistoryPanel = ({ isOpen, onClose, isDocked = false }: HistoryPanelProps) => {
 	return (
 		<>
 			<button
@@ -16,7 +17,7 @@ export const HistoryPanel = ({ isOpen, onClose }: HistoryPanelProps) => {
 			<div
 				className={`cmdk-history-panel ${isOpen ? "cmdk-history-panel-open" : ""}`}
 			>
-				<div className="cmdk-history-header">
+				<div className="cmdk-history-header" data-docked={isDocked}>
 					<h3>History</h3>
 				</div>
 				<div className="cmdk-history-content">
