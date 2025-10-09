@@ -91,15 +91,12 @@ export const CmdK: FC<CmdKProps> = ({
 
 	const { messages, sendMessage } = useChat({
 		transport: new DefaultChatTransport({
-			api: `${apiUrl}/assistants/chat`,
+			api: `${apiUrl}/assistants/${assistantId}/chat`,
 			headers: jwt
 				? {
 						Authorization: `Bearer ${jwt}`,
 					}
 				: {},
-			body: {
-				assistantId,
-			},
 		}),
 	});
 
