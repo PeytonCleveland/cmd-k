@@ -1,11 +1,16 @@
-import { Icons } from "./icons";
+import { Logo } from "./logo";
 
 type EmptyStateProps = {
 	firstName?: string;
 	greeting?: string;
+	theme?: "light" | "dark" | "system";
 };
 
-export const EmptyState = ({ firstName, greeting: customGreeting }: EmptyStateProps) => {
+export const EmptyState = ({
+	firstName,
+	greeting: customGreeting,
+	theme,
+}: EmptyStateProps) => {
 	let greeting = "Hi, how can I help you today?";
 
 	if (customGreeting) {
@@ -22,7 +27,7 @@ export const EmptyState = ({ firstName, greeting: customGreeting }: EmptyStatePr
 	return (
 		<div className="cmdk-empty-state">
 			<div className="cmdk-empty-state-icon">
-				<Icons.LogoMark style={{ width: 40, height: 40 }} />
+				<Logo theme={theme} style={{ width: 48, height: 48 }} />
 			</div>
 			<div>
 				<h4 className="cmdk-empty-state-title">{greeting}</h4>

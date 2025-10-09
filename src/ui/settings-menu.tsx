@@ -10,7 +10,7 @@ export const SettingsMenu = () => {
 					className="cmdk-settings-menu-trigger"
 					aria-label="Settings"
 				>
-					<Icons.LogoMark style={{ width: 18, height: 18 }} />
+					<Icons.LogoMarkDark style={{ width: 18, height: 18 }} />
 				</button>
 			</DropdownMenu.Trigger>
 

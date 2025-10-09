@@ -192,7 +192,7 @@ export const CmdK: FC<CmdKProps> = ({
 				assistantTitle={assistant?.title}
 			/>
 			{messages.length === 0 ? (
-				<EmptyState firstName={firstName} greeting={assistant?.greeting} />
+				<EmptyState firstName={firstName} greeting={assistant?.greeting} theme={theme} />
 			) : (
 				<div className="cmdk-thread" ref={threadRef}>
 					{messages.map((message: UIMessage) => (
