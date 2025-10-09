@@ -6,6 +6,7 @@ type FooterProps = {
 	onToggleFullscreen?: () => void;
 	isDocked?: boolean;
 	layout?: "modal" | "docked" | "fullscreen";
+	theme?: "light" | "dark" | "system";
 };
 
 export const Footer = ({
@@ -13,10 +14,11 @@ export const Footer = ({
 	onToggleFullscreen,
 	isDocked = false,
 	layout = "modal",
+	theme,
 }: FooterProps) => {
 	return (
 		<div className="cmdk-footer">
-			<SettingsMenu />
+			<SettingsMenu theme={theme} />
 			<div className="cmdk-footer-actions">
 				{onToggleDock && (
 					<button

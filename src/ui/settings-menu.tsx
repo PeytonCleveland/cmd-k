@@ -1,7 +1,11 @@
 import { DropdownMenu } from "radix-ui";
 import { Logo } from "./logo";
 
-export const SettingsMenu = () => {
+type Props = {
+	theme?: "light" | "dark" | "system";
+};
+
+export const SettingsMenu = ({ theme }: Props) => {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>
@@ -10,7 +14,7 @@ export const SettingsMenu = () => {
 					className="cmdk-settings-menu-trigger"
 					aria-label="Settings"
 				>
-					<Logo style={{ width: 18, height: 18 }} />
+					<Logo theme={theme} style={{ width: 18, height: 18 }} />
 				</button>
 			</DropdownMenu.Trigger>
 
