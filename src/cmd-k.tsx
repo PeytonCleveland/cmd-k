@@ -211,7 +211,7 @@ export const CmdK: FC<CmdKProps> = ({
 				showClose={showCloseButton}
 				isDocked={isDocked}
 				assistantName={assistant?.name}
-				assistantTitle={assistant?.appearanceConfig?.title}
+				assistantTitle={assistant?.appearanceConfig?.title ?? undefined}
 			/>
 			{messages.length === 0 ? (
 				<EmptyState
