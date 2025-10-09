@@ -1,5 +1,5 @@
 import { DropdownMenu } from "radix-ui";
-import { Icons } from "./icons";
+import { Logo } from "./logo";
 
 export const SettingsMenu = () => {
 	return (
@@ -10,7 +10,7 @@ export const SettingsMenu = () => {
 					className="cmdk-settings-menu-trigger"
 					aria-label="Settings"
 				>
-					<Icons.LogoMarkDark style={{ width: 18, height: 18 }} />
+					<Logo style={{ width: 18, height: 18 }} />
 				</button>
 			</DropdownMenu.Trigger>
 
