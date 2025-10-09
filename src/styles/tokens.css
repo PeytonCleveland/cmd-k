@@ -55,11 +55,11 @@
   
   :root[data-theme="dark"],
   [data-theme="dark"] {
-    --cmdk-bg: #0b1020;
-    --cmdk-fg: #e2e8f0;
-    --cmdk-muted: #1f2937;
-    --cmdk-border: #374151;
-    --cmdk-accent: #60a5fa;
+    --cmdk-bg: #121212;
+    --cmdk-fg: #fafafa;
+    --cmdk-muted: #151515;
+    --cmdk-accent: #1c1c1c;
+    --cmdk-border: #2b2b2b;
     --cmdk-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   }
   

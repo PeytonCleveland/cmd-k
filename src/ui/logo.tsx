@@ -8,7 +8,7 @@ type LogoProps = {
 };
 
 export const Logo = ({ theme, style, className }: LogoProps) => {
-	const LogoComponent = theme === "light" ? Icons.LogoMark : Icons.LogoMarkDark;
+	const LogoComponent = theme === "light" ? Icons.LogoMarkDark : Icons.LogoMark;
 
 	return <LogoComponent style={style} className={className} />;
 };
