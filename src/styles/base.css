@@ -176,7 +176,7 @@
 
   .cmdk-footer-dock-button:hover {
     background: var(--cmdk-muted);
-    border-color: white;
+    border-color: var(--cmdk-fg);
   }
 
   .cmdk-footer-dock-button:active {
@@ -184,7 +184,7 @@
   }
 
   .cmdk-footer-dock-button[data-docked="true"] {
-    border-color: white;
+    border-color: var(--cmdk-fg);
   }
 
   .cmdk-footer-fullscreen-button {
@@ -203,7 +203,7 @@
 
   .cmdk-footer-fullscreen-button:hover {
     background: var(--cmdk-muted);
-    border-color: white;
+    border-color: var(--cmdk-fg);
   }
 
   .cmdk-footer-fullscreen-button:active {
@@ -211,7 +211,7 @@
   }
 
   .cmdk-footer-fullscreen-button[data-fullscreen="true"] {
-    border-color: white;
+    border-color: var(--cmdk-fg);
   }
 
 
@@ -310,7 +310,7 @@
   }
 
   .cmdk-history-header h3 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 16px;
   }
 
