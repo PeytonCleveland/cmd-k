@@ -33,6 +33,8 @@ export type CmdKProps = {
 	className?: string;
 	/** User JWT token for authentication */
 	jwt?: string;
+	/** Theme: "light", "dark", or "system" */
+	theme?: "light" | "dark" | "system";
 };
 
 export const CmdK: FC<CmdKProps> = ({
@@ -46,6 +48,7 @@ export const CmdK: FC<CmdKProps> = ({
 	dockedWidth = 480,
 	className,
 	jwt,
+	theme,
 }) => {
 	const [internalOpen, setInternalOpen] = useState(defaultOpen);
 	const [historyOpen, setHistoryOpen] = useState(false);
@@ -172,6 +175,7 @@ export const CmdK: FC<CmdKProps> = ({
 			}
 			role="dialog"
 			aria-label="AI Assistant"
+			data-theme={theme}
 		>
 			<HistoryPanel
 				isOpen={historyOpen}
