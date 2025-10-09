@@ -76,11 +76,14 @@ export const CmdK: FC<CmdKProps> = ({
 				provider: string;
 				model: string;
 				systemPrompt: string;
-				greeting: string;
-				title: string;
-				themeConfig?: {
-					light?: Record<string, string>;
-					dark?: Record<string, string>;
+				appearanceConfig?: {
+					title?: string | null;
+					greeting?: string;
+					inputPlaceholder?: string;
+					theme?: {
+						light?: Record<string, string>;
+						dark?: Record<string, string>;
+					};
 				};
 			}>;
 		},
@@ -178,8 +181,8 @@ export const CmdK: FC<CmdKProps> = ({
 	// Get custom theme CSS variables
 	const customThemeVars =
 		resolvedTheme === "dark"
-			? assistant?.themeConfig?.dark
-			: assistant?.themeConfig?.light;
+			? assistant?.appearanceConfig?.theme?.dark
+			: assistant?.appearanceConfig?.theme?.light;
 
 	const content = (
 		<div
@@ -208,10 +211,14 @@ export const CmdK: FC<CmdKProps> = ({
 				showClose={showCloseButton}
 				isDocked={isDocked}
 				assistantName={assistant?.name}
-				assistantTitle={assistant?.title}
+				assistantTitle={assistant?.appearanceConfig?.title}
 			/>
 			{messages.length === 0 ? (
-				<EmptyState firstName={firstName} greeting={assistant?.greeting} theme={theme} />
+				<EmptyState
+					firstName={firstName}
+					greeting={assistant?.appearanceConfig?.greeting}
+					theme={theme}
+				/>
 			) : (
 				<div className="cmdk-thread" ref={threadRef}>
 					{messages.map((message: UIMessage) => (
@@ -239,6 +246,7 @@ export const CmdK: FC<CmdKProps> = ({
 				value={input}
 				onChange={handleInputChange}
 				onSubmit={handleSubmit}
+				placeholder={assistant?.appearanceConfig?.inputPlaceholder}
 			/>
 			<Footer
 				onToggleDock={handleToggleDock}
