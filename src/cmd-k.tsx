@@ -245,6 +245,7 @@ export const CmdK: FC<CmdKProps> = ({
 				onToggleFullscreen={handleToggleFullscreen}
 				isDocked={isDocked}
 				layout={layout}
+				theme={theme}
 			/>
 		</div>
 	);
