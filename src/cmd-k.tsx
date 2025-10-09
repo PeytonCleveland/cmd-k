@@ -78,6 +78,10 @@ export const CmdK: FC<CmdKProps> = ({
 				systemPrompt: string;
 				greeting: string;
 				title: string;
+				themeConfig?: {
+					light?: Record<string, string>;
+					dark?: Record<string, string>;
+				};
 			}>;
 		},
 	);
@@ -163,16 +167,31 @@ export const CmdK: FC<CmdKProps> = ({
 	const isDocked = layout === "docked";
 	const showCloseButton = isDocked || layout === "fullscreen";
 
+	// Resolve theme for "system" preference
+	const resolvedTheme =
+		theme === "system"
+			? window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light"
+			: theme;
+
+	// Get custom theme CSS variables
+	const customThemeVars =
+		resolvedTheme === "dark"
+			? assistant?.themeConfig?.dark
+			: assistant?.themeConfig?.light;
+
 	const content = (
 		<div
 			className={clsx("cmdk", className)}
-			style={
-				isDocked
+			style={{
+				...(isDocked
 					? { width: dockedWidth, height: "100vh", borderRadius: 0 }
 					: layout === "fullscreen"
 						? { width: "100vw", height: "100vh" }
-						: undefined
-			}
+						: undefined),
+				...customThemeVars,
+			}}
 			role="dialog"
 			aria-label="AI Assistant"
 			data-theme={theme}
