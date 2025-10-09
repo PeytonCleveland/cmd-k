@@ -24,6 +24,7 @@ export const Input = forwardRef<HTMLTextAreaElement, InputProps>(
 					}
 				}}
 				maxRows={5}
+				autoFocus
 			/>
 		);
 	}

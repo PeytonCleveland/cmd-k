@@ -52,7 +52,6 @@ export const CmdK: FC<CmdKProps> = ({
 	const [layout, setLayout] = useState(initialLayout);
 	const [input, setInput] = useState("");
 	const threadRef = useRef<HTMLDivElement>(null);
-	const inputRef = useRef<HTMLTextAreaElement>(null);
 
 	const firstName = jwt ? getFirstNameFromJWT(jwt) : undefined;
 
@@ -158,12 +157,6 @@ export const CmdK: FC<CmdKProps> = ({
 		}
 	}, [messages]);
 
-	useEffect(() => {
-		if (open && inputRef.current) {
-			inputRef.current.focus();
-		}
-	}, [open]);
-
 	const isDocked = layout === "docked";
 	const showCloseButton = isDocked || layout === "fullscreen";
 
@@ -220,7 +213,6 @@ export const CmdK: FC<CmdKProps> = ({
 				</div>
 			)}
 			<Input
-				ref={inputRef}
 				value={input}
 				onChange={handleInputChange}
 				onSubmit={handleSubmit}
