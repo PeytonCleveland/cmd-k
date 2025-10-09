@@ -23,6 +23,7 @@ export const ModalLayout = ({
 						background: "rgba(0,0,0,0.45)",
 						backdropFilter: "blur(2px)",
 						WebkitBackdropFilter: "blur(2px)",
+						zIndex: 9999,
 					}}
 					onClick={() => onOpenChange(false)}
 				/>
@@ -34,6 +35,7 @@ export const ModalLayout = ({
 						placeItems: "center",
 						padding: 16,
 						pointerEvents: "none",
+						zIndex: 10000,
 					}}
 				>
 					<Dialog.Title asChild>
