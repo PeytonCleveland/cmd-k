@@ -16,6 +16,7 @@ export const ModalLayout = ({
 		<Dialog.Root open={open} onOpenChange={onOpenChange}>
 			<Dialog.Portal>
 				<Dialog.Overlay
+					className="cmdk-modal-overlay"
 					style={{
 						position: "fixed",
 						inset: 0,
@@ -38,7 +39,9 @@ export const ModalLayout = ({
 					<Dialog.Title asChild>
 						<span className="sr-only">Command Palette</span>
 					</Dialog.Title>
-					<div style={{ pointerEvents: "auto" }}>{children}</div>
+					<div className="cmdk-modal-content" style={{ pointerEvents: "auto" }}>
+						{children}
+					</div>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
